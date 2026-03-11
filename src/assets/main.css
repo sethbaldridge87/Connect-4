@@ -53,10 +53,12 @@ main {
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
 }
 
-h2.green, span.green {
+h2.playerOne,
+span.playerOne {
   color: #2abb5f;
 }
-h2.purple, span.purple {
+h2.playerTwo,
+span.playerTwo {
   color: #a32cb5;
 }
 
@@ -85,13 +87,17 @@ table td {
   padding: 10px;
   position: relative;
 }
-table td.green .coin {
+table td.playerOne .coin {
   background: linear-gradient(45deg, #2abb5f, rgb(108.8296943231, 222.1703056769, 150.2576419214));
 }
-table td.purple .coin {
+table td.playerTwo .coin {
   background: linear-gradient(45deg, #a32cb5, rgb(204.5733333333, 107.7866666667, 219.2133333333));
 }
-table td.purple .coin:before, table td.green .coin:before {
+table td.winner .coin {
+  background: linear-gradient(45deg, #e8e527, rgb(241.8158995816, 240.0962343096, 131.1841004184));
+  animation: winAnimation 1s linear infinite;
+}
+table td.playerOne .coin:before, table td.playerTwo .coin:before, table td.winner .coin:before {
   background-color: white;
   border-radius: 50%;
   content: "";
@@ -138,5 +144,16 @@ table .coin {
   }
   100% {
     transform: scale(1, 1);
+  }
+}
+@keyframes winAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
   }
 }/*# sourceMappingURL=main.css.map */

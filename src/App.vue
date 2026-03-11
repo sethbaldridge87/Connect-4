@@ -12,8 +12,7 @@ let winner;
 
 const dropCoin = (xAxis) => {
   // The function that handles the coin drop, coloring in the corresponding cell and switching the player turn
-  remainingTurns--;
-  player1.value === true ? playerColor = 'green' : playerColor = 'purple';
+  player1.value === true ? playerColor = 'playerOne' : playerColor = 'playerTwo';
   const cellsWithxAxis = document.querySelectorAll('td[data-x="' + xAxis +'"]');
   let thisCoin = {};
   let nextPlayer;
@@ -44,9 +43,10 @@ const dropCoin = (xAxis) => {
   }
   setTimeout(function() {
     waiting.value = false;
-    // Prevents console from throwing an error when attempting to click a full column
+    // Prevents error when attempting to click a full column
     if (nextPlayer === true) {
       checkBoard(thisCoin, playerColor);
+      remainingTurns--;
       player1.value = !player1.value;
     }
     if (remainingTurns === 0) {
@@ -57,14 +57,17 @@ const dropCoin = (xAxis) => {
 
 const streakCheck = (cellGroup, cellColor) => {
   // Here we take an array of cells and check to see if we have 4 in a row of a certain color
-  let streak = 0;
+  let streakArray = [];
   for (const cell of cellGroup) {
     if (cell.classList.contains(cellColor)) {
-      streak++;
+      streakArray.push(cell);
     } else {
-      streak = 0;
+      streakArray = [];
     }
-    if (streak === 4) {
+    if (streakArray.length >= 4) {
+      for (const cell of streakArray) {
+        cell.classList.add('winner');
+      }
       endGame(cellColor);
     }
   }
@@ -81,6 +84,9 @@ const verticalCheck = (coinData, coinColor) => {
         return element[0].classList.contains(coinColor);
       });
       if (allHaveClass) {
+        for (const cell of verticalArray) {
+          cell[0].classList.add('winner');
+        }
         endGame(coinColor);
       }
     }
@@ -208,14 +214,14 @@ const endGame = (winnerColor) => {
     if (winnerColor) {
       winner = winnerColor
     }
-  }, 1000);
+  }, 2000);
 }
 
 const clearBoard = () => {
   // This function clears the board and resets the game
   const allCells = document.querySelectorAll('td');
   allCells.forEach((element) => {
-    element.classList.remove('green', 'purple');
+    element.classList.remove('playerOne', 'playerTwo', 'winner');
   });
   waiting.value = false;
   gameOver.value = false;
@@ -233,8 +239,8 @@ const clearBoard = () => {
       <h2>The game is over!
         <span v-if="winner" :class="winner">
           Player 
-          <span v-if="winner === 'green'">1</span>
-          <span v-else-if="winner === 'purple'">2</span>
+          <span v-if="winner === 'playerOne'">1</span>
+          <span v-else-if="winner === 'playerTwo'">2</span>
           wins!
         </span>
         <span v-else>Tie Game!</span>
@@ -246,8 +252,8 @@ const clearBoard = () => {
       <h2>Remaining turns: {{ remainingTurns }}</h2>
       <div class="turn-message">
         <h2 v-if="!waiting" :class="{ 
-          'green': player1,
-          'purple': !player1
+          'playerOne': player1,
+          'playerTwo': !player1
         }">Player 
           <span v-if="player1">1</span>
           <span v-else>2</span>, it's your turn!
