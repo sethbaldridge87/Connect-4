@@ -1,38 +1,58 @@
 <script setup>
 import {ref} from 'vue'
 // Initial setup of global values
-const player1 = ref(true);
 const xAxis = ref([1,2,3,4,5,6,7]);
 const yAxis = ref([6,5,4,3,2,1]);
+const player1 = ref(true);
 const gameOver = ref(false);
+const waiting = ref(false);
 let remainingTurns = 42;
 let playerColor;
+let winner;
 
 const dropCoin = (xAxis) => {
   // The function that handles the coin drop, coloring in the corresponding cell and switching the player turn
   remainingTurns--;
-  player1.value === true ? playerColor = 'red' : playerColor = 'blue';
+  player1.value === true ? playerColor = 'green' : playerColor = 'purple';
   const cellsWithxAxis = document.querySelectorAll('td[data-x="' + xAxis +'"]');
   let thisCoin = {};
   let nextPlayer;
+  let waitTime;
+  waiting.value = true;
   for (let i = cellsWithxAxis.length - 1; i >= 0; i--) {
-    if (cellsWithxAxis[i].classList.length === 0) {
-      cellsWithxAxis[i].classList.add(playerColor);
+    const thisCell = cellsWithxAxis[i];
+    if (thisCell.classList.length === 0) {
+      thisCell.classList.add(playerColor);
+      const getPosition = thisCell.getBoundingClientRect();
+      const coinDrop = thisCell.querySelector('.coin');
+      const topPosition = getPosition.top - 150;
+      coinDrop.animate([
+        { top: '-' + topPosition + 'px' },
+        { top: '10px' }
+      ], {
+        duration: topPosition, // duration in milliseconds
+        iterations: 1 // number of times to repeat, or a number
+      });
       thisCoin = {
-        x: Number(cellsWithxAxis[i].getAttribute('data-x')),
-        y: Number(cellsWithxAxis[i].getAttribute('data-y'))
+        x: Number(thisCell.getAttribute('data-x')),
+        y: Number(thisCell.getAttribute('data-y'))
       }
       nextPlayer = true;
+      waitTime = topPosition;
       break
     }
   }
-  if (nextPlayer === true) {
-    checkBoard(thisCoin, playerColor);
-    player1.value = !player1.value;
-  }
-  if (remainingTurns === 0) {
-    endGame();
-  }
+  setTimeout(function() {
+    waiting.value = false;
+    // Prevents console from throwing an error when attempting to click a full column
+    if (nextPlayer === true) {
+      checkBoard(thisCoin, playerColor);
+      player1.value = !player1.value;
+    }
+    if (remainingTurns === 0) {
+      endGame();
+    }
+  }, waitTime);
 }
 
 const streakCheck = (cellGroup, cellColor) => {
@@ -45,7 +65,7 @@ const streakCheck = (cellGroup, cellColor) => {
       streak = 0;
     }
     if (streak === 4) {
-      endGame();
+      endGame(cellColor);
     }
   }
 }
@@ -61,7 +81,7 @@ const verticalCheck = (coinData, coinColor) => {
         return element[0].classList.contains(coinColor);
       });
       if (allHaveClass) {
-        endGame();
+        endGame(coinColor);
       }
     }
   }
@@ -180,48 +200,67 @@ const checkBoard = (coinData, coinColor) => {
   }
 }
 
-const endGame = () => {
+const endGame = (winnerColor) => {
+  // This function determines if there was a winner or a tie
+  waiting.value = true;
+  setTimeout(function() {
+    gameOver.value = true;
+    if (winnerColor) {
+      winner = winnerColor
+    }
+  }, 1000);
+}
+
+const clearBoard = () => {
   // This function clears the board and resets the game
-  gameOver.value = true;
-  setTimeout(() => clearBoard(), 5000);
-  const clearBoard = () => {
-    const allCells = document.querySelectorAll('td');
-    allCells.forEach((element) => {
-      element.classList.remove('red', 'blue');
-    })
-    gameOver.value = false;
-    player1.value = true;
-    remainingTurns = 42;
-  }
+  const allCells = document.querySelectorAll('td');
+  allCells.forEach((element) => {
+    element.classList.remove('green', 'purple');
+  });
+  waiting.value = false;
+  gameOver.value = false;
+  player1.value = true;
+  winner = '';
+  remainingTurns = 42;
 }
 
 </script>
 
 <template>
   <main>
-    <h1>Connect 4</h1>
-    <h2>Remaining turns: {{ remainingTurns }}</h2>
-    <h2 v-if="gameOver">The game is over! Player <span v-if="!player1">1</span>
-      <span v-else>2</span> wins!</h2>
-    <h2 v-if="!gameOver" :class="{ 
-      'red': player1,
-      'blue': !player1
-    }">Player 
-      <span v-if="player1">1</span>
-      <span v-else>2</span>, it's your turn!
-    </h2>
-    <table>
-      <thead>
-        <tr>
-          <th v-for="xValue in xAxis">
-            <div v-on:click="dropCoin(xValue)"></div>
-          </th>
-        </tr>
-      </thead>
+    <div v-if="gameOver" class="modal-background"></div>
+    <div v-if="gameOver" class="modal">
+      <h2>The game is over!
+        <span v-if="winner" :class="winner">
+          Player 
+          <span v-if="winner === 'green'">1</span>
+          <span v-else-if="winner === 'purple'">2</span>
+          wins!
+        </span>
+        <span v-else>Tie Game!</span>
+      </h2>
+      <button v-on:click="clearBoard()">Reset Game</button>
+    </div>
+    <header>
+      <h1>Connect 4</h1>
+      <h2>Remaining turns: {{ remainingTurns }}</h2>
+      <div class="turn-message">
+        <h2 v-if="!waiting" :class="{ 
+          'green': player1,
+          'purple': !player1
+        }">Player 
+          <span v-if="player1">1</span>
+          <span v-else>2</span>, it's your turn!
+        </h2>
+      </div>
+    </header>
+    <table :class="{'disable': waiting}">
       <tbody>
         <tr v-for="yValue in yAxis" :data-y="yValue">
-          <td :data-x="xValue" :data-y="yValue" v-for="xValue in xAxis">
-            <div class="circle"></div>
+          <td :data-x="xValue" :data-y="yValue" v-for="xValue in xAxis" v-on:click="dropCoin(xValue)">
+            <div class="circle">
+            </div>
+              <div class="coin"></div>
           </td>
         </tr>
       </tbody>
