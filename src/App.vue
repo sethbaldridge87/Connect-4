@@ -265,8 +265,8 @@ const clearBoard = () => {
         <tr v-for="yValue in yAxis" :data-y="yValue">
           <td :data-x="xValue" :data-y="yValue" v-for="xValue in xAxis" v-on:click="dropCoin(xValue)">
             <div class="circle">
-            </div>
               <div class="coin"></div>
+            </div>
           </td>
         </tr>
       </tbody>

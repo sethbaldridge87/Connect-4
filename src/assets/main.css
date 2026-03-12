@@ -5,13 +5,11 @@ html {
 body {
   background-color: #282727;
   color: #fff;
-  margin: 5px;
 }
 
 main {
   justify-items: center;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 5px;
   text-align: center;
 }
 
@@ -53,12 +51,10 @@ main {
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.25);
 }
 
-h2.playerOne,
-span.playerOne {
+h2.playerOne, span.playerOne {
   color: #2abb5f;
 }
-h2.playerTwo,
-span.playerTwo {
+h2.playerTwo, span.playerTwo {
   color: #a32cb5;
 }
 
@@ -75,9 +71,7 @@ table {
   border-radius: 30px;
   box-shadow: 15px 15px 0px 0px #4b4b4b;
   padding: 10px;
-  position: absolute;
-  top: 0;
-  transform: scale(0.45);
+  width: 100%;
 }
 table.disable {
   pointer-events: none;
@@ -86,6 +80,23 @@ table td {
   cursor: pointer;
   padding: 10px;
   position: relative;
+}
+table td .circle {
+  align-content: center;
+  background-color: #282727;
+  border: 2.5px solid transparent;
+  border-radius: 50%;
+  padding-top: 100%;
+  position: relative;
+  width: 100%;
+}
+table td .coin {
+  border-radius: 50%;
+  left: 0;
+  padding-top: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 table td.playerOne .coin {
   background: linear-gradient(45deg, #2abb5f, rgb(108.8296943231, 222.1703056769, 150.2576419214));
@@ -97,45 +108,22 @@ table td.winner .coin {
   background: linear-gradient(45deg, #e8e527, rgb(241.8158995816, 240.0962343096, 131.1841004184));
   animation: winAnimation 1s linear infinite;
 }
-table td.playerOne .coin:before, table td.playerTwo .coin:before, table td.winner .coin:before {
-  background-color: white;
-  border-radius: 50%;
-  content: "";
-  height: 20px;
-  opacity: 0.25;
-  position: absolute;
-  right: 20px;
-  top: 15px;
-  transform: rotate(-25deg);
-  width: 10px;
-}
-table .circle {
-  align-content: center;
-  background-color: #282727;
-  border: 2.5px solid transparent;
-  border-radius: 50%;
-  height: 75px;
-  width: 75px;
-}
-table .coin {
-  position: absolute;
-  height: 80px;
-  width: 80px;
-  border-radius: 50%;
-  top: 10px;
-  left: 10px;
-}
 
-@media screen and (min-width: 576px) {
-  table {
-    top: 100px;
-    transform: scale(0.75);
-  }
-}
 @media screen and (min-width: 767px) {
   table {
-    position: static;
-    transform: scale(1);
+    max-width: 730px;
+  }
+  .playerOne .coin:before, .playerTwo .coin:before, .winner .coin:before {
+    background-color: white;
+    border-radius: 50%;
+    content: "";
+    height: 20px;
+    opacity: 0.25;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    transform: rotate(-25deg);
+    width: 10px;
   }
 }
 @keyframes zoom-in {
