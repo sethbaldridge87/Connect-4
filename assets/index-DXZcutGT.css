@@ -1,1 +1,166 @@
-html{font-family:Tahoma,Geneva,sans-serif}body{background-color:#282727;color:#fff}main{justify-items:center;margin:5px;text-align:center}.modal-background{display:block;position:fixed;inset:0;background-color:#000;opacity:.5;z-index:1}.modal{background-color:#dbd9d9;border-radius:15px;color:#000;display:table;padding:30px;position:fixed;inset:50% 15px;animation:zoom-in .5s forwards;margin:auto;max-width:400px;z-index:1}.modal button{border-radius:15px;cursor:pointer;padding:10px;transition:.25s}.modal button:hover{box-shadow:5px 5px 5px #00000040}h2.playerOne,span.playerOne{color:#2abb5f}h2.playerTwo,span.playerTwo{color:#a32cb5}.turn-message{height:30px;margin-bottom:20px}.turn-message h2{margin:0}table{background-color:#787575;border-radius:30px;box-shadow:15px 15px #4b4b4b;padding:10px;width:100%}table.disable{pointer-events:none}table td{cursor:pointer;padding:10px;position:relative}table td .circle{align-content:center;background-color:#282727;border:2.5px solid transparent;border-radius:50%;padding-top:100%;position:relative;width:100%}table td .coin{border-radius:50%;left:0;padding-top:100%;position:absolute;top:0;width:100%}table td.playerOne .coin{background:linear-gradient(45deg,#2abb5f,#6dde96)}table td.playerTwo .coin{background:linear-gradient(45deg,#a32cb5,#cd6cdb)}table td.winner .coin{background:linear-gradient(45deg,#e8e527,#f2f083);animation:winAnimation 1s linear infinite}@media screen and (min-width:767px){table{max-width:730px}.playerOne .coin:before,.playerTwo .coin:before,.winner .coin:before{background-color:#fff;border-radius:50%;content:"";height:20px;opacity:.25;position:absolute;right:20px;top:15px;transform:rotate(-25deg);width:10px}}@keyframes zoom-in{0%{transform:scale(.25)}to{transform:scale(1)}}@keyframes winAnimation{0%{transform:scale(1)}50%{transform:scale(1.15)}to{transform:scale(1)}}
+html {
+    font-family: Tahoma, Geneva, sans-serif
+}
+
+body {
+    background-color: #282727;
+    color: #fff
+}
+
+main {
+    justify-items: center;
+    margin: 5px;
+    text-align: center
+}
+
+.modal-background {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-color: #000;
+    opacity: .5;
+    z-index: 1
+}
+
+.modal {
+    background-color: #dbd9d9;
+    border-radius: 15px;
+    color: #000;
+    display: table;
+    padding: 30px;
+    position: fixed;
+    inset: 50% 15px;
+    animation: zoom-in .5s forwards;
+    margin: auto;
+    max-width: 400px;
+    z-index: 1
+}
+
+.modal button {
+    border-radius: 15px;
+    cursor: pointer;
+    padding: 10px;
+    transition: .25s
+}
+
+.modal button:hover {
+    box-shadow: 5px 5px 5px #00000040
+}
+
+h2.playerOne,
+span.playerOne {
+    color: #2abb5f
+}
+
+h2.playerTwo,
+span.playerTwo {
+    color: #a32cb5
+}
+
+.turn-message {
+    height: 30px;
+    margin-bottom: 20px
+}
+
+.turn-message h2 {
+    margin: 0
+}
+
+table {
+    background-color: #787575;
+    border-radius: 30px;
+    box-shadow: 15px 15px #4b4b4b;
+    padding: 10px;
+    width: 100%
+}
+
+table.disable {
+    pointer-events: none
+}
+
+table td {
+    cursor: pointer;
+    padding: 5px;
+    position: relative
+}
+
+table td .circle {
+    align-content: center;
+    background-color: #282727;
+    border: 2.5px solid transparent;
+    border-radius: 50%;
+    padding-top: 100%;
+    position: relative;
+    width: 100%
+}
+
+table td .coin {
+    border-radius: 50%;
+    left: 0;
+    padding-top: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%
+}
+
+table td.playerOne .coin {
+    background: linear-gradient(45deg, #2abb5f, #6dde96)
+}
+
+table td.playerTwo .coin {
+    background: linear-gradient(45deg, #a32cb5, #cd6cdb)
+}
+
+table td.winner .coin {
+    background: linear-gradient(45deg, #e8e527, #f2f083);
+    animation: winAnimation 1s linear infinite
+}
+
+@media screen and (min-width:767px) {
+    table {
+        max-width: 730px
+    }
+
+    table td {
+        padding: 10px;
+    }
+
+    .playerOne .coin:before,
+    .playerTwo .coin:before,
+    .winner .coin:before {
+        background-color: #fff;
+        border-radius: 50%;
+        content: "";
+        height: 20px;
+        opacity: .25;
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        transform: rotate(-25deg);
+        width: 10px
+    }
+}
+
+@keyframes zoom-in {
+    0% {
+        transform: scale(.25)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+@keyframes winAnimation {
+    0% {
+        transform: scale(1)
+    }
+
+    50% {
+        transform: scale(1.15)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
